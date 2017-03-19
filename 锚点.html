@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>锚点</title>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+
+</body>
+</html>
+<script src="js/angular.js"></script>
+<script>
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope, $location){
+		console.log($location);
+	});
+
+</script>
+
+<!--
+1-location里面有个hashkey
+2-$location.path()
+3-$watch只能监视$scope里面的数据，所以要重新赋值给$scope.location = $location;
+	要监视path() -- $scope.$watch( location.path() ); -- 写法很奇怪。。。
+-->
