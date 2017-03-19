@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body ng-app="meApp" ng-controller="meCtrl">
+    <pre>
+        {{doubandata|json}}
+    </pre>
+</body>
+<script src="js/angular.min.js"></script>
+<script>
+    //创建模块和控制器
+    var app=angular.module('meApp',[]);
+
+    //创建服务 - 解决API跨域
+    app.service('apiService',function () {
+        this.jsonp=function (url,params,callback) {
+            var name='JSONP'+Math.random().toString().substring(2);
+            var strUrl=url+'?callback='+name;
+
+            for(var key in params){
+                strUrl+='&'+key+'='+params[key];
+            };
+
+            window[name]=function (data) {
+                callback(data);
+            };
+
+            var script=document.createElement('script');
+            script.src=strUrl;
+
+            document.body.appendChild(script);
+            document.body.removeChild(script);
+        }
+    });
+
+    //
+    app.controller('meCtrl',function ($scope,apiService) {
+        var url = 'https://api.douban.com/v2/book/1220562';
+        var pararms = {apikey:'00fa6c0654689a0202ef4412fd39ce06'};
+
+        apiService.jsonp(url, pararms, function (data){
+            $scope.doubandata = data;
+            console.info(data);
+            $scope.$apply();
+        });
+
+    })
+</script>
+</html>
