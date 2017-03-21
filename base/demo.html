@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>HTML5 Local Storage Example</h1>
+    <form method="post" class="form-horizontal">
+        <fieldset>
+            <legend>Enquiry Form</legend>
+            <div class="control-group">
+                <label class="control-label" for="type">Type of enquiry</label>
+                <div class="controls">
+                    <select name="type" id="type">
+                        <option value="">Please select</option>
+                        <option value="general">General</option>
+                        <option value="sales">Sales</option>
+                        <option value="support">Support</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="name">Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" type="text" name="name" id="name" value="" maxlength="50">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email">Email Address</label>
+                <div class="controls">
+                    <input class="input-xlarge" type="text" name="email" id="email" value="" maxlength="150">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="message">Message</label>
+                <div class="controls">
+                    <textarea class="input-xlarge" name="message" id="message"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox">
+                        <input name="subscribe" id="subscribe" type="checkbox">
+                        Subscribe to our newsletter
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="submit" name="submit" id="submit" value="Send" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script src="angular.js"></script>
+<script src="jquery-1.12.4.min.js"></script>
+<script>
+    $(function () {
+        /*
+         * 判断是否支持localstorage
+         */
+        if (localStorage) {
+            /*
+             * 读出localstorage中的值
+             */
+            if (localStorage.type) {
+                $("#type").find("option[value=" + localStorage.type + "]").attr("selected", true);
+            }
+            if (localStorage.name) {
+                $("#name").val(localStorage.name);
+            }
+            if (localStorage.email) {
+                $("#email").val(localStorage.email);
+            }
+            if (localStorage.message) {
+                $("#message").val(localStorage.message);
+            }
+            if (localStorage.subscribe === "checked") {
+                $("#subscribe").attr("checked", "checked");
+            }
+            /*
+             * 当表单中的值改变时,localstorage的值也改变
+             */
+            $("input[type=text],select,textarea").change(function () {
+                $this = $(this);
+                localStorage[$this.attr("name")] = $this.val();
+            });
+            $("input[type=checkbox]").change(function () {
+                $this = $(this);
+                localStorage[$this.attr("name")] = $this.attr("checked");
+            });
+            $("form")
+            /*
+             * 如果表单提交，则调用clear方法
+             */
+                    .submit(function () {
+                        localStorage.clear();
+                    })
+                    .change(function () {
+                        console.log(localStorage);
+                    });
+        }
+    })
+</script>
+
