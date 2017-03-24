@@ -3,7 +3,6 @@
 - 01.douban：
 - 02.todoList：页面样式和布局是成品，只是用angular实现数据双向绑定、依赖注入、模块、控制、路由、指令、自定义指令、服务、过滤器、锚链接、本地存储。
 
-
 ## 01.douban
 
 > 模块列表
@@ -17,12 +16,12 @@
 7. top250：
 ```
 
-- 1. 创建主模块
+- 创建主模块
     **单页面应用没有controller, controller都在路由表里面**
 
 ## 02.todoList
 
-- 页面初始化
+### 页面初始化
 
 ```HTML
 <ul class="todo-list">
@@ -60,14 +59,85 @@
 ```
 - ``completed: true ``表示完成，对应的input标签就应该有checked属性。
 - 绑定信息：``ng-bind='todo.text'``,设置class:``ng-class='{completed: todo.completed}'``
-
-> 创建服务，把数据写到localStroage
-```javascript
-    var app = angular.module('todoApp.ser', []);  //服务模块名
-    app.service('storageSer', function ($window, $filter){  //服务名
-
+- 创建服务：首先测试服务能否注入成功，在把假数据放到service。
+    - 获取数据：调用get( )  -> 再返回数组。
+    ```javascript
+    var app = angular.module('todoApp.ser', []);  //todoApp.ser -> 服务模块名
+    app.service('storageSer', function (){  //storageSer -> 服务名
+        this.test = 'this is storageSer test';
     })
-```
+    //创建一个todoApp.ser模块，-> 往主模块的中括号里面注入 -> 而且要在主模块之前注入
+    //服务名 -> 要注入到主模块的controller的形参里面
+    ```
+
+- 然后在换成localStorage
+    - localStorage：只有获取，设置，和清空; 存的是对象，获取的是数组。
+    ```javascript
+    localStorage.getItem() //获取
+    localStorage.setItem() //设置
+         localStorage.setItem('key', 'value') // 键值对，都是String
+    localStorage.clear()    //清除
+    ```
+    - 1.localStorage是window的。需要注入$window,
+        - 设置全局变量：var Storage = $window.localStorage;
+    ```javascript
+    var list = Storage.getItem('list') || '[]';
+    ```
+    - 2.这时候获取到的还只是String，还要转换成JSON。
+    ```javascript
+    var list = JSON.parse(Storage.getItem('list'));
+    ```
+    - 3.``注意：``要解决数据为空，返回null的现象。
+    ```javascript
+        var list = JSON.parse(Storage.getItem('list') || '[]');
+    ```
+
+### 添加数据
+- 先测试服务的add()能不能跑起来。
+    - html页面绑定函数在form标签。
+    - 测试把添加的数据console.log
+        - ng-submit + ng-model一起使用。
+
+- 添加的数据要追加到list里面，list 现在是变量还在内存中，所以添加之后要立刻保存。这样才能get到新的数据
+    - 1.添加之前要定义一个保存的函数，在添加的函数里面执行。
+    - 2.``注意：``数组的每一个是字符串的对象。所以，存进去要把对象转换成字符串
+    ```javascript
+        this.save = function(){
+            Storage.setItem('todoList', JSON.stringify(todoList))
+        };
+        this.add = function(txt){
+            todoList.push({text:txt, completed:false});
+            this.save();
+        };
+    ```
+    - 3.``bug：``添加重名的问题，'track by'
+    ```
+        ng-repeat="todo in Hlist | filter: todoComStatus track by $index"
+    ```
+
+### 删除数据
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # base
 > 什么是类库和框架

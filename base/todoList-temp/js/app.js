@@ -1,21 +1,16 @@
 (function (window) {
 	'use strict';
-	var app = angular.module('todoApp', []);
-	app.controller('todoCtrl', function ($scope, $window){
-		//$scope.list = [
-		//	{text:'html', completed:true},
-		//	{text:'css', completed:true},
-		//	{text:'angular', completed:false},
-		//	{text:'node.js', completed:false},
-		//	{text:'jquery', completed:false}
-		//];
+	var app = angular.module('todoApp', ['todoApp.ser']);
+	app.controller('todoCtrl', function ($scope, storageSer){
+		//console.log(storageSer.test); //测试服务的引入是否成功
+		$scope.Hlist = storageSer.get();
 
-		//开始使用localStorage代替数组
-		//1.先获取storage存放在变量里
-
-		var storage = $window.localStorage;
-
-		$scope.list = JSON.parse(storage.getItem('todoList')||'[]');
+		//添加
+		$scope.todo = '';
+		$scope.addTodo = function (){
+			storageSer.add($scope.todo);
+			$scope.todo = '';
+		};
 
 	})
 
