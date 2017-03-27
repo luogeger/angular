@@ -114,15 +114,58 @@
     ```
         ng-repeat="todo in Hlist | filter: todoComStatus track by $index"
     ```
+> **Bug：** 添加数据不能为空。同样，修改数据的时候，把数据清空就删除这条数据。
+```javascript
+        if(todo.length > 0){
+            list.push({text:todo, completed:false});
+            this.save();
+        }
+```
 
 ### 删除数据
+- ng-model='todo'是绑定在form标签下的input上面**和**button标签上的ng-click='delTodo(todo)' -> 这里的实参怎么联系在一起的。
+- list.splice(index, 1); -> 这里直接返回的是破坏后的数组
+
+### 修改数据
+- 双击修改，给lable绑定``ng-daclick=''``
+    - li标签后面多一个class``editing``,值是true或false，通过临时变量来实现
+        - **bug:** 临时变量还是不能实现，因为todo多了以后，双击一个todo,所有的todo都会变成编辑状态，要保证双击的当前lable标签的li标签添加``.editing``
+        - 所以，建立临时的``空``对象，点击之后赋值给这个对象，``.editing``再根据它们是否相等``editing: temp == todo``而动态添加
+    - li标签多了``class='ng-scope editing'``
+    - div消失，input标签显示。
+- 再给input标签绑定失去焦点事件，改变li标签后面``.editing``的显示隐藏。
+> 然后在保存。**pit：** 修改数据的时候，把数据清空，仍然有空栏。保存时候的判断
+> **pit：** 双击事件不能获取焦点
+
+### 左下角item统计
+- 统计的是没有完成的数据，为false的。
+- 统计的需要监视的是动态值 -> 监视的是todoList
+    - 监视的是新的值``发生动态后的值`` -> newVal，
+    - 监视的是数组，后面要加true
+    - 监视的是整个todoList的数据。
+    ```javascript
+      $scope.$watch('HList', function(newVal){
+          console.log(newVal);
+      }, true);
+    ```
 
 
+- **过滤器，$filter 是需要注入的。**
+    - 过滤器是把符合条件的过滤掉，!!
+    ```javascript
+    $filter.('filter')(Hlist, {complete: false});
+    ```
 
+### 删除已完成的
+- 只有页面有显示已完成的todo。右下角的``Clear Completed``才显示
+    - ``ng-show=''``, -> 过滤之后true的数量大于
+- **清除：** 把完成``true``的todo删除，不能够直接**赋值todoList**, 先过滤拿到未完成的todo，在清空数组，然后追加。
+    ```javascript
+    //angular提供了类似push方法
+    angular.merge(list, unfinished);
+    ```
 
-
-
-
+### 全选切换
 
 
 

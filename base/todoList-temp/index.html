@@ -4,38 +4,38 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Template • TodoMVC</title>
-		<link rel="stylesheet" href="css/base.css">
+		<!--<link rel="stylesheet" href="css/base.css">-->
 		<link rel="stylesheet" href="css/index.css">
 		<!-- CSS overrides - remove if you don't need it -->
-		<link rel="stylesheet" href="css/app.css">
+		<!--<link rel="stylesheet" href="css/app.css">-->
 	</head>
 	<body ng-app="todoApp" ng-controller="todoCtrl">
 		<section class="todoapp">
 			<header class="header">
 				<h1>todoList</h1>
-				<form ng-submit="addTodo()">
+				<form ng-submit="addTodo(todo)">
 					<input ng-model="todo" class="new-todo" placeholder="What needs to be done?" autofocus>
 				</form>
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section class="main">
-				<input class="toggle-all" type="checkbox">
-				<label for="toggle-all">Mark all as complete</label>
+				<input ng-show="isShowAll" ng-click="changeAll()" class="toggle-all" type="checkbox">
+				<!--<label for="toggle-all">Mark all as complete</label>-->
 				<ul class="todo-list">
-					<li ng-repeat="todo in Hlist | filter: todoComStatus track by $index" ng-class="{completed: todo.completed}">
+					<li ng-repeat="todo in Hlist | filter: todoComStatus track by $index" ng-class="{completed: todo.completed, editing: temp == todo}">
 						<div class="view">
 							<input class="toggle" type="checkbox" ng-model="todo.completed">
-							<label  ng-bind="todo.text"></label>
-							<button class="destroy"></button>
+							<label  ng-bind="todo.text" ng-dblclick="ediTodo(todo)"></label>
+							<button ng-click="delTodo(todo)" class="destroy"></button>
 						</div>
-						<input class="edit" value="Create a TodoMVC template">
+						<input class="edit" ng-model="todo.text" ng-blur="saveTodo(todo)">
 					</li>
 				</ul>
 			</section>
 			<!-- This footer should hidden by default and shown when there are todos -->
 			<footer class="footer">
 				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong>0</strong> item left</span>
+				<span class="todo-count"><strong ng-bind="item"></strong> item left</span>
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
@@ -49,7 +49,7 @@
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed">Clear completed</button>
+				<button ng-show="clearShow" ng-click="clearCompleted()" class="clear-completed">Clear completed</button>
 			</footer>
 		</section>
 		<footer class="info">
