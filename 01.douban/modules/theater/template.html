@@ -1,32 +1,37 @@
 
-<h1 class="page-header"></h1>
+<h1 class="page-header">{{title}}</h1>
 <div class="list-group ">
-    <a  ng-href="{{'#/subject/'+item.id}}" class="list-group-item" ng-repeat="item in subjects">
+    <a  href="" class="list-group-item" ng-repeat="item in subjects">
         <div class="media">
             <div class="media-left">
-                <img class="media-object" alt="{{item.title}}" ng-src="{{item.images.medium}}">
+                <img class="media-object" alt="" ng-src="{{item.images.medium}}">
             </div>
             <div class="media-body">
-                <span class="badge pull-right">{{item.rating.average}}</span>
+                <span class="badge pull-right" ng-bind="item.rating.average"></span>
                 <h3 class="media-heading ">{{item.title}}</h3>
-                <p>类型：
-                    <span ng-repeat=" genre in item.genres">{{genre}}{{$last?'':'、'}}</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;上映年份：<span >{{item.year}}</span></p>
+                <p>
+                    类型：
+                    <span ng-repeat="ever in item.genres">{{ever}}{{$last?'':'、'}}</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    上映年份：
+                    <span ng-bind="item.year"></span>
+                </p>
                 <p>导演：
-                    <span ng-repeat="director in item.directors">{{director.name}}{{$last?'':'、'}}</span> </p>
+                    <span ng-bind="item.directors[0].name"></span>
+                </p>
                 <p>主演：
-                    <span ng-repeat="cast in item.casts">{{cast.name}}{{$last?'':'、'}}</span>
+                    <span ng-repeat="cast in item.casts">{{cast.name}}{{$last?'':'、 '}}</span>
                 </p>
             </div>
         </div>
     </a>
 </div>
 <div>
-    <p>总共：{{total}}条记录，第{{page}}/{{maxPage}}页</p>
+    <p>总共：23条记录，第3/7页</p>
     <nav>
         <ul class="pager">
-            <li ng-class="{disabled:page<=1}"><a ng-click="upPage(page-1)" > 上一页</a></li>
-            <li ng-class="{disabled:page>=maxPage}" ng-click="downPage(page+1)" ><a>下一页</a></li>
+            <li><a> 上一页</a></li>
+            <li><a>下一页</a></li>
         </ul>
     </nav>
 </div>
