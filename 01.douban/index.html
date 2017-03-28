@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <!--添加ng-app movie.mainApp-->
-<body ng-app="movie.mainApp">
+<body ng-app="mainApp">
     <!--  -->
     <nav  class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -35,15 +35,14 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="#/main">正在热映</a></li>
+                    <li><a href="#/theater">正在热映</a></li>
                     <li><a href="#">即将上映</a></li>
                     <li><a href="#">TOP250</a></li>
                 </ul>
             </div>
             <!-- 主要的内容区域 -->
             <div ng-view class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -54,8 +53,9 @@
 <!-- 主模块 -->
 <script src="modules/main/module.js"></script>
 <script src="modules/main/route.js"></script>
-
-
+<!-- theater -->
+<script src="modules/theater/module.js"></script>
+<script src="modules/theater/route.js"></script>
 
 
 </html>

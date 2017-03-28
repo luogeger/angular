@@ -26,3 +26,13 @@
   }
 })
 ```
+
+```
+1. coming：即将上映
+2. theater：正在热映
+3. main：主模块
+4. search：搜索
+5. services：服务
+6. subject：
+7. top250：
+```
