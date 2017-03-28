@@ -35,15 +35,13 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="#/theater">正在热映</a></li>
-                    <li><a href="#">即将上映</a></li>
+                    <li><a href="#/main">正在热映</a></li>
+                    <li><a href="#/theater">即将上映</a></li>
                     <li><a href="#">TOP250</a></li>
                 </ul>
-            </div>0
-            <!-- 主要的内容区域 -->
-            <div ng-view class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
             </div>
+            <!-- 主要的内容区域 -->
+            <div ng-view class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
         </div>
     </div>
 </body>
@@ -53,6 +51,7 @@
 <!-- 主模块 -->
 <script src="modules/main/module.js"></script>
 <script src="modules/main/route.js"></script>
+<script src="modules/services/jsonSer.js"></script>
 <!-- theater -->
 <script src="modules/theater/module.js"></script>
 <script src="modules/theater/route.js"></script>

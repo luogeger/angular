@@ -1,6 +1,9 @@
 ;(function (angular){
     var app = angular.module('mainApp', [
-        'ngRoute','mainApp','theaterApp'
+        'ngRoute',
+        'mainAppSer',
+        'mainApp',
+        'theaterApp'
     ]);
 
 })(angular);
