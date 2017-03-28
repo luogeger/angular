@@ -36,3 +36,5 @@
 6. subject：
 7. top250：
 ```
+
+- otherwise: 默认跳转地址
