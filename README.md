@@ -16,8 +16,100 @@
 7. top250：
 ```
 
-- 创建主模块
+### 创建主模块
     **单页面应用没有controller, controller都在路由表里面**
+- 子模块测试
+- 默认跳转到子模块
+- jsonp服务拿过来
+- 引用服务，添加服务
+- 属性：``ng-src='{{}}'``
+- 对象里面的数组不知道数量，但是每一项都要渲染出来。
+    ```html
+    <span ng-repeat="ever in item.genres">{{ever}}{{$last?'':'、'}}</span>
+   ```
+
+### 分页
+> ``$routeParams``, ``$route``
+- 1.需要传递2个参数实现分页。
+    - start：返回的第一条对应的是数组的索引值
+    - count：每页显示的数量
+    ```javascript
+    $scope.page = 1; //页码数
+    $scope.countPage = 4; // 页容量
+    $scope.startPage = ($scope.page - 1)*$scope.countPage; // 每页显示的第一条
+    var pararms = {
+        api: '00fa6c0654689a0202ef4412fd39ce06',
+        start:$scope.startPage, //页码数
+        count:$scope.countPage, //页容量
+    };
+    ```
+
+- 2.不能动态分页，通过传递页码数来分页
+    - ``.when( '/theater/:page', {...} )`` ，``：``表示这个参数是可以改变
+    - ``$routeParams``：这个服务可以获取页面上可变的参数
+        - ``2.1pit: ``现在获取不到的，因为路径变了，要在后面加参数才能看到，而且看到的是第一页，才能看到打印的$routeParams
+        - console.log($routeParams); 获取的是一个对象。``{page: '3'}``
+    - ``pit：``console.log($routeParams.page)获取的是字符串，但是下面是在进行运算，所以，要数据转换
+        - ``$scope.page = parseInt($routeParams.page)``
+        - 防止传来的数据有变化，做个兼容处理。
+            - $scope.page = parseInt($routeParams.page || '1');
+
+- 3.``.when( '/theater/:page', {} )`` page后面什么都不写，跳不过来
+    - '/theater/:page？' -> 这里多了 **？** 表示这个参数可以为空。现在page既能为空，也能改变.
+        - 所以，现在不传页码数，也能看到页面。解决了``2.1pit``
+
+- 4.总数、第几页、共几页
+    - 总数：$scope.total = 0;
+    - 第几页：$routeParams.page
+    - 共几页：向上取整``Math.ceil()``，同时，不能在页面运算。
+        - ``pit:  ``赋值为0，在获取总数后在运算。
+
+- 5.现在打开页面默认第一页，还有上一页、下一页，及页码数的动态显示。
+    - 实现点击改变$scope.page的值。并在页面显示
+    ```html
+      <li><a ng-click="upPage(page-1)"> 上一页</a></li>
+      <li><a ng-click="downPage(page+1)">下一页</a></li>
+    ```
+    ```javascript
+        $scope.upPage = function (nowPage){
+            if(nowPage > 0){
+                $scope.page = nowPage;
+            }
+        };
+        $scope.downPage = function (nowPage){
+            if(nowPage <= $scope.maxPage){
+                $scope.page = nowPage;
+            }
+        };
+    ```
+    - 页面刷新是根据服务实现的。这里用``$route``来更新页码数，来刷新页面
+        - ``$route.updataParams({page: ''})``调用这个方法来实现，
+        ```javascript
+            $scope.upPage = function (nowPage){
+                if(nowPage > 0){
+                    $scope.page = nowPage;
+                    $route.updateParams({page: nowPage})
+                }
+            };
+            //用一个函数实现上一页、下一页
+            $scope.updataPage = function (nowPage){
+                if(nowPage > 0 && nowPage <= $scope.maxPage){
+                    $scope.page = nowPage;
+                    $route.updateParams({page: nowPage})
+                    console.log(nowPage);
+                }
+            };
+        ```
+        - ``bug: `` 刷新页面是恢复到第一页，还是当前页
+        
+- 6.上一页、下一页的禁止点击。
+    ```html
+    <li ng-class="{disabled: page == 1}"></li>
+    <li ng-class="{disabled: page == maxPage}"></li>
+    ```
+
+
+
 
 ## 02.todoList
 
@@ -166,7 +258,10 @@
     ```
 
 ### 全选切换
-
+- 先改变列表里todo状态
+- 再改变样式
+    - 每个todo的完成状态和全选框的状态保持一致。
+- 全选框的样式要被监视。
 
 
 

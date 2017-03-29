@@ -27,11 +27,11 @@
     </a>
 </div>
 <div>
-    <p>总共：23条记录，第3/7页</p>
+    <p>总共：{{total}}条记录，第{{page}}/{{maxPage}}页</p>
     <nav>
         <ul class="pager">
-            <li><a> 上一页</a></li>
-            <li><a>下一页</a></li>
+            <li ng-class="{disabled: page == 1}"><a ng-click="updataPage(page-1)"> 上一页</a></li>
+            <li ng-class="{disabled: page == maxPage}"><a ng-click="updataPage(page+1)">下一页</a></li>
         </ul>
     </nav>
 </div>

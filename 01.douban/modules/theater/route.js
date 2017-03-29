@@ -3,7 +3,7 @@
     app.config(function ($routeProvider){
         $routeProvider
             .when(
-                '/theater',
+                '/theater/:page?',
                 {
                     templateUrl: 'modules/theater/template.html',
                     controller: 'theaterCtrl'
