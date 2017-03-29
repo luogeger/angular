@@ -4,6 +4,8 @@
         'mainAppSer',
         'mainApp',
         'theaterApp',
+        'comingApp',
+        'topApp',
         'subjectApp'
     ]);
 
