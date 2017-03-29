@@ -1,4 +1,4 @@
-# angularDemo
+# AngularJS
 
 - 01.douban：
 - 02.todoList：页面样式和布局是成品，只是用angular实现数据双向绑定、依赖注入、模块、控制、路由、指令、自定义指令、服务、过滤器、锚链接、本地存储。
@@ -17,7 +17,7 @@
 ```
 
 ### 创建主模块
-    **单页面应用没有controller, controller都在路由表里面**
+**单页面应用没有controller, controller都在路由表里面**
 - 子模块测试
 - 默认跳转到子模块
 - jsonp服务拿过来
@@ -109,6 +109,11 @@
     ```
 
 ### 详情页
+### coming_soon
+### top250
+### 搜索
+- ``$route``是在控制器里注入
+    - ``$route.updateParams()``
 
 
 
@@ -289,7 +294,7 @@
 
 ## angular表达式
 
-- 表达式的形式有很多种都是通过｛｛｝｝包裹起来，最后将运算结果返回出去
+- 表达式的形式有很多种都是通过｛｛ ｝｝包裹起来，最后将运算结果返回出去
 - 字符串 {{string}}
 - 数字 {{number}}
 - 布尔 {{boolean}}
@@ -300,6 +305,39 @@
 ## 指令
 
 - ng-app:
+    - 一般只有一个模块
+    - 如果多模块开发, 是把子模块名添加到主模块的**中括号** 里。
+    ```html
+        <div ng-app="mainApp">
+            <div ng-controller="myCtrl">
+                {{name}}
+            </div>
+            <div ng-controller="myCtrl2">
+                {{name}}
+            </div>
+        </div>
+    ```
+    ```javascript
+        var app=angular.module('mainApp',['myApp2']);
+        app.controller('myCtrl',function ($scope) {
+            $scope.name='myCtrl';
+        });
+        var app2=angular.module('myApp2',[]);
+        app2.controller('myCtrl2',function ($scope) {
+            $scope.name='myCtrl2';
+        })
+    ```
+- ng-controller:
+    - 可以有过个控制器，控制器内部的$scope对象的属性命名``不会``冲突
+    ```javascript
+      var app=angular.module('myApp',[]);
+      app.controller('myController',function ($scope) {
+          $scope.name='myController';
+      })
+      app.controller('myController2',function ($scope) {
+          $scope.name='myController2';
+      })
+    ```
 - ng-init:
 - ng-model:
 - ng-bind:
@@ -307,15 +345,391 @@
 - ng-click:
 - ng-repeat:
 - ng-class:
+    - 处理奇偶行变色的用法。
+    ```html
+      <li ng-class-even="{red:true}" ng-class-odd="{blue:true}"  ng-repeat="num in list">{{num}}</li>
+      <li ng-class="{red:$index%2,blue:!($index%2)}"  ng-repeat="num in list">{{num}}</li>
+      <li ng-class="{red:$even,blue:$odd}"  ng-repeat="num in list">{{num}}</li>
+    ```
+    ```javascript
+      $scope.list=[1,2,3,4,5,6,7,8];
+    ```
+    - ng-class和js中的class差不多,ng-class的参数是一个对象，对象的key是类样式的名字,value是true或者是false用来控制样式的启用和不启用
 - ng-if:
 - ng-hide:
 - ng-show:
 - ng-switch:
+    ```html
+        <input type="text" ng-model="text" >
+        <ul ng-switch="text">
+            <li ng-switch-when="1">这是1</li>
+            <li ng-switch-when="2">这是2</li>
+            <li ng-switch-when="3">这是3</li>
+            <li ng-switch-when="4">这是4</li>
+            <li ng-switch-when="5">这是5</li>
+            <li ng-switch-default="">默认</li>
+        </ul>
+    ```
+    - 监视的数据是如果是对象，要添加``true``
+    ```javascript
+        $scope.$watch('obj',function (newVal,oldVal) {
+            console.log('newVal:'+newVal.name);
+            console.log('oldVal:'+oldVal.name);
+        },true)
+    ```
+    - ``$watch``只能用来监视$scope中的数据,
+    ```javascript
+        var number=1;
+        $scope.$watch('number',function (newV,oldV) {
+          console.log('newVal:'+newV); //undefined
+          console.log('oldVal:'+oldV); //undefined
+        })
+    ```
 - ng-src:
 - ng-href:
 - ng-focus:
 - ng-blur:
 - ng-dbclick:
+
+> 1.Angular的DOM处理
+```html
+<h1 id="myH1">这是jqLite处理的dom元素</h1>
+```
+```javascript
+angular.element(document).find('h1').css('background-color','red');
+// 当然也可以用jQuery的方式处理dom元素，但是要在angular之前引用jQuery
+angular.element(document).find('#myH1').css('background-color','red');
+```
+
+> 2.代码压缩问题
+- 1.代码压缩需要添加中括号将其包裹
+    - 在中括号里面添加对应的服务，在后面的function服务的引用顺序不能改变
+    ```javascript
+        var app=angular.module('myApp',[]);
+        app.controller('myCtrl',['$scope','$log',function ($scope,$log) {
+            $scope.name='myCtrl';
+            $log.info('123');
+        }]);
+    ```
+- 2.这种js压缩的过后的代码是可以被运行的
+```javascript
+    var app=angular.module("myApp",[]);app.controller("myCtrl",["$scope",function(a){a.name="myCtrl"}]);
+```
+
+- 3.像下面这种代码压缩以后没有$scope是无法运行的
+```javascript
+    var app=angular.module("myApp",[]);app.controller("myCtrl",function(a){a.name="myCtrl"});
+```
+
+- 4.避免代码压缩问题 - ``$inject``
+```javascript
+    var app=angular.module('myApp',[]);
+    function otherCtrl(a) {
+        a.name='在外部引用ctrl'
+    }
+    //在代码外部添加$inject避免js代码压缩问题
+    otherCtrl.$inject=['$scope'];
+    app.controller('myCtrl',otherCtrl)
+```
+
+> 3.``$rootScope`` $scope是从$rootScope继承过来的
+```html
+<body ng-app="myApp">
+    {{name}}
+    <div ng-controller="myCtrl">
+        {{name}}
+    </div>
+</body>
+```
+```javascript
+    var app=angular.module('myApp',[]);
+    app.run(function ($rootScope) {
+        $rootScope.name='123';
+    })
+    app.controller('myCtrl',function ($scope,$rootScope) {
+        $rootScope.name='在myCtrl中修改的$rootScope.name'; // 第一个name
+		$scope.name='$scope.name'; // 第二个name
+    })
+```
+
+> 4.``$interval`` 和 ``setinterval( )``
+```javascript
+    app.controller('myCtrl',function ($scope,$interval) {
+        $scope.time=new Date();
+        $scope.time2=new Date();
+
+        setInterval(function () {
+            $scope.time=new Date();
+            console.log($scope.time);
+
+        },1000);
+
+        $interval(function () {
+            $scope.time2=new Date();
+        },1000)
+    })
+```
+- 在angular中如果使用的方法无法将数据更新到页面上
+    - $scope.$apply();告诉angular重新更新$scope中的数据
+- $interval和window.setInterval用法一样
+    - $interval内部含有$scope.$apply()，会将$scope更新。
+
+> 5.服务：``$injector``、``service``、``factory``
+- ``$injector``
+    - 内部使用依赖注入的方式添加服务
+    ```javascript
+        var app=angular.module('myApp',[]);
+        app.controller('myCtrl',function ($scope,$injector) {
+            //内部添加服务
+            $injector.invoke(function ($log) {
+                $log.info('123');
+            })
+        })
+    ```
+- ``service``
+    - app.service('这里是服务的名称，不用加$', function (){} );
+- ``factory``
+    - 返回的是一个对象
+    ```javascript
+        var app=angular.module('myApp',[]);
+        app.service('myService',function () {
+            this.name='asd';
+            this.GetName=function () {
+                return '这是一个方法';
+            }
+        });
+
+        app.factory('myFactory',function () {
+            return {
+                name:'myFactory',
+                GetName:function () {
+                    return '这是从Factory创建出来的一个方法'
+                }
+            }
+        });
+        app.controller('myCtrl',function ($scope,myService,myFactory) {
+            console.log(myService.name);
+            console.log(myService.GetName());
+            console.log(myFactory.name);
+            console.log(myFactory.GetName());
+        })
+    ```
+
+> 6.自定义指令：可以当``标签``使用，也可以当``属性``使用, 返回的是一个**对象**
+```html
+    <!--以属性的方式实现-->
+    <h1 hello=""> </h1>
+    <!--标签的方式实现-->
+    <luo></luo>
+    <xiao></xiao>
+```
+```javascript
+    app.directive('luo',function () {
+        return {
+            template:'<h2>hello  directive</h2>'
+        }
+    });
+    //模仿angular实现ng-
+    app.directive('xiao',function () {
+        return {
+            template:'<h2>MyHello</h2>'
+        }
+    });
+```
+- 还可以返回一个URL
+```javascript
+    app.directive('myHello',function () {
+        return {
+            templateUrl:'template/myhellotemplate.html'
+        }
+    });
+```
+
+> 7.自定义指令：呈现的形式，不仅有标签、属性还有**class** ,E标签、A属性、C类样式
+```html
+    <luo></luo>
+    <div luo> </div>
+    <div class="luo"> </div>
+```
+```javascript
+    app.directive('myHello',function () {
+        return {
+            template:'<h1>myHello</h1>',
+            restrict:'EAC' //restrict用来限制自定义呈现形式
+        }
+    })
+```
+
+> 8.去除自定义指令标签外面的壳
+- ``replace: true``: 代码块里面就不会出现``<luo></luo>``的标签，只会有``<h1>MyHello</h1>``
+```html
+<luo></luo>
+```
+```javascript
+app.directive('luo',function () {
+    return {
+        template:'<h1>MyHello</h1>',
+        replace:true
+    }
+});
+```
+
+> 9.外部传进来的值修改模板中的内容
+- 在模版内部添加ng-transclude是告诉外部的值传递进来以后修改其标签中间的内容
+```html
+<my-hello>这是我在外部传进来的值</my-hello>
+```
+
+```javascript
+    app.directive('myHello',function () {
+        return {
+            template:'<div>' +
+            '<h1 ng-transclude></h1><h2 ng-transclude> </h2>' +
+            '</div>',
+            transclude:true
+        }
+    });
+```
+
+> 10.自定义指令操作DOM
+- 在angular中所有的dom处理建议在自定义指令中完成
+- ``pit：``自定义指令名字驼峰命名，标签中的属性名字``-``
+```html
+    <div my-link="" class="red">  </div>
+```
+```javascript
+    app.directive('myLink',function () {
+        return {
+            link:function (scope,ele,attr) {
+                console.log(scope);
+                console.log(ele); //ele就是咱们的jqLite元素
+                console.log(attr);
+                ele.on('click',function () {
+                    console.log('这是jqLite的做出来的log');
+                })
+            }
+        }
+    })
+```
+
+> 11.常用过滤器 +　过滤器创建
+```html
+    {{money}}
+    {{1000|currency}}
+```
+```javascript
+    app.controller('myCtrl',function ($scope,$filter) {
+       $scope.money=$filter('currency')(1000);
+    })
+```
+
+> 12.锚链接：单页面应用程序原理
+```html
+    <ul>
+        <li><a href="#/my">我的音乐</a></li>
+        <li><a href="#/friend">朋友</a></li>
+    </ul>
+    <div id="view">
+        <!--页面上需要修改的内容-->
+    </div>
+```
+
+```javascript
+    window.addEventListener('hashchange',function () {
+        console.log(location.hash);
+        var view=document.getElementById('view');
+        //switch(location.hash.substring(2)){
+        switch(location.hash){
+            case'#/my':
+                view.innerHTML='我的音乐';
+                break;
+            case'#/friend':
+                view.innerHTML='朋友';
+                break;
+            //default
+        }
+    })
+```
+
+> 13.路由
+- 引入angular.js 和 angular-route.js
+- ``ngRoute``是在模板的中括号里注入。
+```html
+    <ul>
+        <li><a href="#/my">我的音乐</a></li>
+        <li><a href="#/friend">朋友</a></li>
+        <li><a href="#/mycontroller">mycontroller</a></li>
+        <li><a href="#/mytemplate">mytemplate</a></li>
+    </ul>
+```
+```javascript
+var app=angular.module('myApp',['ngRoute']);
+    app.config(function ($routeProvider) {
+        $routeProvider
+                .when('/my',{
+                    template:'<h1>我的音乐</h1>'
+                })
+                .when('/friend',{
+                    template:'<h2>{{name}}</h2>',
+                    controller:function ($scope) { //匿名的controller
+                        $scope.name='朋友'
+                    }
+                })
+                .when('/mycontroller',{
+                    template:'<h3>{{name}}</h3>',
+                    controller:'myCtrl'
+                })
+                .when('/mytemplate',{ //推荐写法
+                    templateUrl:'mytemplate.html',
+                    controller:'myCtrl2'
+                })
+                .otherwise({
+                    redirectTo:'/my'   //默认跳转现有路径
+                });
+    });
+    app.controller('myCtrl',function ($scope) {
+        $scope.name='mycontroller';
+    });
+    app.controller('myCtrl2',function ($scope) {
+        $scope.name='这是从html模板中获取的数据';
+    });
+```
+
+> 14.angular发送get请求
+- 豆瓣api从服务器打开是跨域
+- 百度api从本地文件打开是跨域
+- 百度api从服务器打开正常
+```html
+    <pre>
+        {{jsonData|json}}
+    </pre>
+```
+```javascript
+    app.controller('myCtrl',function ($http,$scope) {  //发送get数据请求
+        $http({
+            method: 'GET',//发送get请求
+            //url: 'http://apis.baidu.com/apistore/weatherservice/recentweathers?cityname=上海&cityid=101020100',
+            url: 'https://api.douban.com/v2/movie/coming_soon?callback=JSONP',
+            //headers:{
+            //'apikey':'8e6189783419dc1acd9993dc26927edd'//你的key
+            //'apikey':'08bfec92df73d84c56eb4bfe33fbfe37'//你的key
+            //}
+        })
+        .then(
+        function successCallback (data) {  //成功的回调函数
+            console.log('successCallback');
+            console.log(data);
+            $scope.jsonData=data;
+
+        },
+        function errorCallback(data) {  //失败的回调函数
+            console.log('errorCallback');
+            console.log(data);
+        })
+    })
+```
+
+> 15.手写跨域
 
 
 ## 全局API

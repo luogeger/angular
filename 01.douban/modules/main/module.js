@@ -6,7 +6,17 @@
         'theaterApp',
         'comingApp',
         'topApp',
-        'subjectApp'
+        'subjectApp',
+        //'searchApp'
     ]);
+
+    app.controller('searchCtrl', function ($scope){
+        $scope.searchResult = 'luogeger';
+        $scope.searchEnter = function ($scope, $routeParams){
+            console.log($routeParams);
+        };
+    });
+
+
 
 })(angular);
