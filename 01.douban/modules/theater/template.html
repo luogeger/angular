@@ -1,7 +1,7 @@
 
 <h1 class="page-header">{{title}}</h1>
 <div class="list-group ">
-    <a  href="" class="list-group-item" ng-repeat="item in subjects">
+    <a  ng-href="{{'#/subject/' + item.id}}" class="list-group-item" ng-repeat="item in subjects">
         <div class="media">
             <div class="media-left">
                 <img class="media-object" alt="" ng-src="{{item.images.medium}}">

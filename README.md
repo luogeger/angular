@@ -54,7 +54,7 @@
         - 防止传来的数据有变化，做个兼容处理。
             - $scope.page = parseInt($routeParams.page || '1');
 
-- 3.``.when( '/theater/:page', {} )`` page后面什么都不写，跳不过来
+- 3.``.when( '/theater/:page', {...} )`` page后面什么都不写，跳不过来
     - '/theater/:page？' -> 这里多了 **？** 表示这个参数可以为空。现在page既能为空，也能改变.
         - 所以，现在不传页码数，也能看到页面。解决了``2.1pit``
 
@@ -100,13 +100,15 @@
                 }
             };
         ```
-        - ``bug: `` 刷新页面是恢复到第一页，还是当前页
-        
+        - ``pit: `` 刷新页面还是停留在当前页，不是在第一页
+
 - 6.上一页、下一页的禁止点击。
     ```html
     <li ng-class="{disabled: page == 1}"></li>
     <li ng-class="{disabled: page == maxPage}"></li>
     ```
+
+### 详情页
 
 
 

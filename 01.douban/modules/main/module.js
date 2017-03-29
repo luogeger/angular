@@ -3,7 +3,8 @@
         'ngRoute',
         'mainAppSer',
         'mainApp',
-        'theaterApp'
+        'theaterApp',
+        'subjectApp'
     ]);
 
 })(angular);
