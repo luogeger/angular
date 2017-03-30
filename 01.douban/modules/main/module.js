@@ -7,13 +7,18 @@
         'comingApp',
         'topApp',
         'subjectApp',
-        //'searchApp'
+        'searchApp'
     ]);
 
-    app.controller('searchCtrl', function ($scope){
-        $scope.searchResult = 'luogeger';
-        $scope.searchEnter = function ($scope, $routeParams){
-            console.log($routeParams);
+    app.controller('mainSearchCtrl', function ($scope, $route,$location){
+        $scope.searchResult = '';
+
+        $scope.searchEnter = function (){
+            //$location.path可以用来更新
+            console.log($location.path());
+            $location.path('/search/'+$scope.searchResult);
+            //route.updateParams只能追加不能删除前面的参数
+            //$route.updateParams({q:'张艺谋'});
         };
     });
 

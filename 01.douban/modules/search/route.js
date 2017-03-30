@@ -3,10 +3,10 @@
     app.config(function ($routeProvider){
         $routeProvider
             .when(
-                '/coming/:page?',
+                '/search/:q/:page?',
                 {
-                    templateUrl: 'modules/coming/template.html',
-                    controller: 'comingCtrl'
+                    templateUrl: 'modules/search/template.html',
+                    controller: 'searchCtrl'
                 }
             )
     })

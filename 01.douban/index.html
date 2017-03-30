@@ -23,9 +23,9 @@
                 </button>
                 <a class="navbar-brand" href="#">Moviecat</a>
             </div>
-            <div ng-controller="searchCtrl" id="navbar" class="navbar-collapse collapse">
+            <div ng-controller="mainSearchCtrl" id="navbar" class="navbar-collapse collapse">
                 <form ng-submit="searchEnter()" class="navbar-form navbar-right" >
-                    <input ng-model="searchResult" type="text" class="form-control" >
+                    <input ng-model="searchResult" type="text" class="form-control" placeholder="Search">
                 </form>
             </div>
         </div>
@@ -64,4 +64,7 @@
 <!-- top250 -->
 <script src="modules/top250/module.js"></script>
 <script src="modules/top250/route.js"></script>
+<!-- search -->
+<script src="modules/search/module.js"></script>
+<script src="modules/search/route.js"></script>
 </html>

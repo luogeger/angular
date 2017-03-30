@@ -83,7 +83,7 @@
         };
     ```
     - 页面刷新是根据服务实现的。这里用``$route``来更新页码数，来刷新页面
-        - ``$route.updataParams({page: ''})``调用这个方法来实现，
+        - ``$route.updateParams({page: ''})``调用这个方法来实现，
         ```javascript
             $scope.upPage = function (nowPage){
                 if(nowPage > 0){
@@ -113,9 +113,10 @@
 ### top250
 ### 搜索
 - ``$route``是在控制器里注入
-    - ``$route.updateParams()``
-
-
+    - ``$route.updateParams({q: })``更新q
+- 创建search模块
+    - 在pararms参数里面加 :q
+    - q是从锚点值里面拿到的，``q:$routeParams.q``
 
 
 ## 02.todoList
@@ -708,12 +709,11 @@ var app=angular.module('myApp',['ngRoute']);
     app.controller('myCtrl',function ($http,$scope) {  //发送get数据请求
         $http({
             method: 'GET',//发送get请求
-            //url: 'http://apis.baidu.com/apistore/weatherservice/recentweathers?cityname=上海&cityid=101020100',
-            url: 'https://api.douban.com/v2/movie/coming_soon?callback=JSONP',
-            //headers:{
+            url: 'http://apis.baidu.com/apistore/weatherservice/recentweathers?cityname=上海&cityid=101020100',
+            headers:{
             //'apikey':'8e6189783419dc1acd9993dc26927edd'//你的key
-            //'apikey':'08bfec92df73d84c56eb4bfe33fbfe37'//你的key
-            //}
+            'apikey':'08bfec92df73d84c56eb4bfe33fbfe37'//你的key
+            }
         })
         .then(
         function successCallback (data) {  //成功的回调函数
@@ -729,7 +729,7 @@ var app=angular.module('myApp',['ngRoute']);
     })
 ```
 
-> 15.手写跨域
+> 15.$localtion
 
 
 ## 全局API
