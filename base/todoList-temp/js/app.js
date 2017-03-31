@@ -29,6 +29,7 @@
 			$scope.temp = {};
 		};
 
+		$scope.AllStatus = false;//全选框的默认样式
 		//统计
 		$scope.item = 123;
 		$scope.$watch('Hlist', function (newVal){
@@ -36,6 +37,9 @@
 			//监视clearCompleted的显示隐藏
 			$scope.clearShow = $filter('filter')($scope.Hlist,  {completed: true}).length > 0 ? true:false;
 			storageSer.addSave();
+			//监视全选框的样式
+			$scope.AllStatus = !$filter('filter')($scope.Hlist,  {completed: false}).length;
+			console.log($scope.AllStatus);
 		}, true);
 
 		//删除已完成的
@@ -44,8 +48,10 @@
 		};
 
 		//全选
-		$scope.changeAll = function (){
-			storageSer.changeAll();
+		$scope.changeAllStatus = function (){
+			$scope.Hlist.forEach(function (i, v){
+				i.completed = $scope.AllStatus;
+			})
 		};
 
 		//状态切换

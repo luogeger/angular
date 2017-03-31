@@ -1,16 +1,6 @@
 ;(function (){
     var app = angular.module('todoApp.ser', []);
     app.service('storageSer', function ($window, $filter){
-        //this.test = 'this is storageSer test';
-
-        //var list = [
-        //    {text:'asd', completed:true},
-        //    {text:'css', completed:true},
-        //    {text:'angular', completed:false},
-        //    {text:'node.js', completed:false},
-        //    {text:'jquery', completed:false}
-        //];
-
         var Storage = $window.localStorage;
         var list = JSON.parse(Storage.getItem('todolist') || '[]');
 
@@ -48,9 +38,6 @@
             list.splice(0, list.length);
             angular.merge(list, unfinished);
         };
-        this.changeAll = function (){
-            console.log('123');
-            var isShowAll = true;
-        };
+
     })
 })();

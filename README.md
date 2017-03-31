@@ -266,10 +266,16 @@
     ```
 
 ### 全选切换
-- 先改变列表里todo状态
-- 再改变样式
-    - 每个todo的完成状态和全选框的状态保持一致。
-- 全选框的样式要被监视。
+> 分2步进行：
+- 1.全选框控制todo和自己的状态保持一致。
+    - 给全选input``ng-model='AllStaus'``，每次点击打印出来得不是**false** 就是**true**
+    - 再循环``forEach``给每一个todo的completed，这样点击全选框就能控制todo的completed，
+- 2.所有todo控制全选框的样式。-> 用到监视
+
+- ``pit: ``全选和footer的显示隐藏由todoList.length来决定的,不需要监视，``ng-hide='!Hlist.length'``
+
+### 锚点切换
+
 
 
 
