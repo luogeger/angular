@@ -24,13 +24,13 @@
 - 引用服务，添加服务
 - 属性：``ng-src='{{}}'``
 - 对象里面的数组不知道数量，但是每一项都要渲染出来。
-    ```html
+  ```html
     <span ng-repeat="ever in item.genres">{{ever}}{{$last?'':'、'}}</span>
-   ```
+  ```
 
 ### 分页
 > ``$routeParams``, ``$route``
-- 1.需要传递2个参数实现分页。
+-   1.需要传递2个参数实现分页。
     - start：返回的第一条对应的是数组的索引值
     - count：每页显示的数量
     ```javascript
@@ -44,7 +44,7 @@
     };
     ```
 
-- 2.不能动态分页，通过传递页码数来分页
+-   2.不能动态分页，通过传递页码数来分页
     - ``.when( '/theater/:page', {...} )`` ，``：``表示这个参数是可以改变
     - ``$routeParams``：这个服务可以获取页面上可变的参数
         - ``2.1pit: ``现在获取不到的，因为路径变了，要在后面加参数才能看到，而且看到的是第一页，才能看到打印的$routeParams
@@ -54,17 +54,17 @@
         - 防止传来的数据有变化，做个兼容处理。
             - $scope.page = parseInt($routeParams.page || '1');
 
-- 3.``.when( '/theater/:page', {...} )`` page后面什么都不写，跳不过来
+-   3.``.when( '/theater/:page', {...} )`` page后面什么都不写，跳不过来
     - '/theater/:page？' -> 这里多了 **？** 表示这个参数可以为空。现在page既能为空，也能改变.
         - 所以，现在不传页码数，也能看到页面。解决了``2.1pit``
 
-- 4.总数、第几页、共几页
+-   4.总数、第几页、共几页
     - 总数：$scope.total = 0;
     - 第几页：$routeParams.page
     - 共几页：向上取整``Math.ceil()``，同时，不能在页面运算。
         - ``pit:  ``赋值为0，在获取总数后在运算。
 
-- 5.现在打开页面默认第一页，还有上一页、下一页，及页码数的动态显示。
+-   5.现在打开页面默认第一页，还有上一页、下一页，及页码数的动态显示。
     - 实现点击改变$scope.page的值。并在页面显示
     ```html
       <li><a ng-click="upPage(page-1)"> 上一页</a></li>
@@ -82,7 +82,7 @@
             }
         };
     ```
-    - 页面刷新是根据服务实现的。这里用``$route``来更新页码数，来刷新页面
+    -   页面刷新是根据服务实现的。这里用``$route``来更新页码数，来刷新页面
         - ``$route.updateParams({page: ''})``调用这个方法来实现，
         ```javascript
             $scope.upPage = function (nowPage){
@@ -102,10 +102,10 @@
         ```
         - ``pit: `` 刷新页面还是停留在当前页，不是在第一页
 
-- 6.上一页、下一页的禁止点击。
+-   6.上一页、下一页的禁止点击。
     ```html
-    <li ng-class="{disabled: page == 1}"></li>
-    <li ng-class="{disabled: page == maxPage}"></li>
+      <li ng-class="{disabled: page == 1}"></li>
+      <li ng-class="{disabled: page == maxPage}"></li>
     ```
 
 ### 详情页
@@ -120,7 +120,9 @@
 
 
 ## 02.todoList
-
+- 全选框的样式，
+- todo的样式 勾选和删除键
+- 双击todo, li标签有edting类样式
 ### 页面初始化
 
 ```HTML
@@ -157,9 +159,9 @@
     <input class="edit" value="Create a TodoMVC template">
 </li>
 ```
-- ``completed: true ``表示完成，对应的input标签就应该有checked属性。
-- 绑定信息：``ng-bind='todo.text'``,设置class:``ng-class='{completed: todo.completed}'``
-- 创建服务：首先测试服务能否注入成功，在把假数据放到service。
+-   ``completed: true ``表示完成，对应的input标签就应该有checked属性。
+-   绑定信息：``ng-bind='todo.text'``,设置class:``ng-class='{completed: todo.completed}'``
+-   创建服务：首先测试服务能否注入成功，在把假数据放到service。
     - 获取数据：调用get( )  -> 再返回数组。
     ```javascript
     var app = angular.module('todoApp.ser', []);  //todoApp.ser -> 服务模块名
@@ -170,7 +172,7 @@
     //服务名 -> 要注入到主模块的controller的形参里面
     ```
 
-- 然后在换成localStorage
+-   然后在换成localStorage
     - localStorage：只有获取，设置，和清空; 存的是对象，获取的是数组。
     ```javascript
     localStorage.getItem() //获取
@@ -193,12 +195,12 @@
     ```
 
 ### 添加数据
-- 先测试服务的add()能不能跑起来。
+-   先测试服务的add()能不能跑起来。
     - html页面绑定函数在form标签。
     - 测试把添加的数据console.log
         - ng-submit + ng-model一起使用。
 
-- 添加的数据要追加到list里面，list 现在是变量还在内存中，所以添加之后要立刻保存。这样才能get到新的数据
+-   添加的数据要追加到list里面，list 现在是变量还在内存中，所以添加之后要立刻保存。这样才能get到新的数据
     - 1.添加之前要定义一个保存的函数，在添加的函数里面执行。
     - 2.``注意：``数组的每一个是字符串的对象。所以，存进去要把对象转换成字符串
     ```javascript
@@ -238,8 +240,8 @@
 > **pit：** 双击事件不能获取焦点
 
 ### 左下角item统计
-- 统计的是没有完成的数据，为false的。
-- 统计的需要监视的是动态值 -> 监视的是todoList
+-   统计的是没有完成的数据，为false的。
+-   统计的需要监视的是动态值 -> 监视的是todoList
     - 监视的是新的值``发生动态后的值`` -> newVal，
     - 监视的是数组，后面要加true
     - 监视的是整个todoList的数据。
@@ -250,19 +252,19 @@
     ```
 
 
-- **过滤器，$filter 是需要注入的。**
+-   **过滤器，$filter 是需要注入的。**
     - 过滤器是把符合条件的过滤掉，!!
     ```javascript
     $filter.('filter')(Hlist, {complete: false});
     ```
 
 ### 删除已完成的
-- 只有页面有显示已完成的todo。右下角的``Clear Completed``才显示
+-   只有页面有显示已完成的todo。右下角的``Clear Completed``才显示
     - ``ng-show=''``, -> 过滤之后true的数量大于
-- **清除：** 把完成``true``的todo删除，不能够直接**赋值todoList**, 先过滤拿到未完成的todo，在清空数组，然后追加。
+-   **清除：** 把完成``true``的todo删除，不能够直接**赋值todoList**, 先过滤拿到未完成的todo，在清空数组，然后追加。
     ```javascript
-    //angular提供了类似push方法
-    angular.merge(list, unfinished);
+      //angular提供了类似push方法
+      angular.merge(list, unfinished);
     ```
 
 ### 全选切换
@@ -274,7 +276,31 @@
 
 - ``pit: ``全选和footer的显示隐藏由todoList.length来决定的,不需要监视，``ng-hide='!Hlist.length'``
 
+### 获取焦点，DOM操作 -> 自定义指令
+- ``pit：``自定义指令是创建一个模块，要在app.js注入。
+    - 在标签里当属性使用``-``
+- JQLite元素，只能获取标签
+```javascript
+    var app = angular.module('mainDirective', []);
+    app.directive('focusDirective', function (){
+        return {
+            link: function (scope, ele, attr){
+                console.log(scope);
+                console.log(ele);
+                console.log(attr);
+                ele.on('dblclick', function (){
+                    console.info(this);//这里的this是dom元素
+                    console.info(angular.element(this)); // 这个是JQLite元素，只能获取标签
+                    angular.element(this).find('input').eq(1)[0].focus();
+                })
+            }
+        }
+    })
+```
+ ![console.log](F:\01.Picture\07.picpic\03-31_1312.angularDirective.png)![]()
 ### 锚点切换
+
+
 
 
 
@@ -293,11 +319,11 @@
 
 # base
 > 什么是类库和框架
-  - 类库:类库是一些函数的集合，它能帮助你写WEB应用。起主导作用的是你的代码，由你来决定何时使用类库。类库有：jQuery等
-  - 框架:框架是一种特殊的、已经实现了的WEB应用，你只需要对它填充具体的业务逻辑。这里框架是起主导作用的，由它来根据具体的应用逻辑来调用你的代码。
-  - 库和框架最大的区别是
-    - 库中的方法是由开发者调用，框架是由框架本身来调用开发者写好的方法
-  	- 使用框架的时候需要对框架有一定认识才能使用
+- 类库:类库是一些函数的集合，它能帮助你写WEB应用。起主导作用的是你的代码，由你来决定何时使用类库。类库有：jQuery等
+- 框架:框架是一种特殊的、已经实现了的WEB应用，你只需要对它填充具体的业务逻辑。这里框架是起主导作用的，由它来根据具体的应用逻辑来调用你的代码。
+    - 库和框架最大的区别是
+      - 库中的方法是由开发者调用，框架是由框架本身来调用开发者写好的方法
+      - 使用框架的时候需要对框架有一定认识才能使用
 
 ## angular表达式
 
@@ -311,7 +337,7 @@
 
 ## 指令
 
-- ng-app:
+-   ng-app:
     - 一般只有一个模块
     - 如果多模块开发, 是把子模块名添加到主模块的**中括号** 里。
     ```html
@@ -334,7 +360,7 @@
             $scope.name='myCtrl2';
         })
     ```
-- ng-controller:
+-   ng-controller:
     - 可以有过个控制器，控制器内部的$scope对象的属性命名``不会``冲突
     ```javascript
       var app=angular.module('myApp',[]);
@@ -345,13 +371,13 @@
           $scope.name='myController2';
       })
     ```
-- ng-init:
-- ng-model:
-- ng-bind:
-- ng-bind-html:
-- ng-click:
-- ng-repeat:
-- ng-class:
+-   ng-init:
+-   ng-model:
+-   ng-bind:
+-   ng-bind-html:
+-   ng-click:
+-   ng-repeat:
+-   ng-class:
     - 处理奇偶行变色的用法。
     ```html
       <li ng-class-even="{red:true}" ng-class-odd="{blue:true}"  ng-repeat="num in list">{{num}}</li>
@@ -362,20 +388,20 @@
       $scope.list=[1,2,3,4,5,6,7,8];
     ```
     - ng-class和js中的class差不多,ng-class的参数是一个对象，对象的key是类样式的名字,value是true或者是false用来控制样式的启用和不启用
-- ng-if:
-- ng-hide:
-- ng-show:
-- ng-switch:
+-   ng-if:
+-   ng-hide:
+-   ng-show:
+-   ng-switch:
     ```html
-        <input type="text" ng-model="text" >
-        <ul ng-switch="text">
-            <li ng-switch-when="1">这是1</li>
-            <li ng-switch-when="2">这是2</li>
-            <li ng-switch-when="3">这是3</li>
-            <li ng-switch-when="4">这是4</li>
-            <li ng-switch-when="5">这是5</li>
-            <li ng-switch-default="">默认</li>
-        </ul>
+          <input type="text" ng-model="text" >
+          <ul ng-switch="text">
+              <li ng-switch-when="1">这是1</li>
+              <li ng-switch-when="2">这是2</li>
+              <li ng-switch-when="3">这是3</li>
+              <li ng-switch-when="4">这是4</li>
+              <li ng-switch-when="5">这是5</li>
+              <li ng-switch-default="">默认</li>
+          </ul>
     ```
     - 监视的数据是如果是对象，要添加``true``
     ```javascript
@@ -392,11 +418,11 @@
           console.log('oldVal:'+oldV); //undefined
         })
     ```
-- ng-src:
-- ng-href:
-- ng-focus:
-- ng-blur:
-- ng-dbclick:
+-   ng-src:
+-   ng-href:
+-   ng-focus:
+-   ng-blur:
+-   ng-dbclick:
 
 > 1.Angular的DOM处理
 ```html
@@ -409,7 +435,7 @@ angular.element(document).find('#myH1').css('background-color','red');
 ```
 
 > 2.代码压缩问题
-- 1.代码压缩需要添加中括号将其包裹
+-   1.代码压缩需要添加中括号将其包裹
     - 在中括号里面添加对应的服务，在后面的function服务的引用顺序不能改变
     ```javascript
         var app=angular.module('myApp',[]);
@@ -418,7 +444,7 @@ angular.element(document).find('#myH1').css('background-color','red');
             $log.info('123');
         }]);
     ```
-- 2.这种js压缩的过后的代码是可以被运行的
+-   2.这种js压缩的过后的代码是可以被运行的
 ```javascript
     var app=angular.module("myApp",[]);app.controller("myCtrl",["$scope",function(a){a.name="myCtrl"}]);
 ```
@@ -482,7 +508,7 @@ angular.element(document).find('#myH1').css('background-color','red');
     - $interval内部含有$scope.$apply()，会将$scope更新。
 
 > 5.服务：``$injector``、``service``、``factory``
-- ``$injector``
+-   ``$injector``
     - 内部使用依赖注入的方式添加服务
     ```javascript
         var app=angular.module('myApp',[]);
@@ -493,9 +519,9 @@ angular.element(document).find('#myH1').css('background-color','red');
             })
         })
     ```
-- ``service``
+-   ``service``
     - app.service('这里是服务的名称，不用加$', function (){} );
-- ``factory``
+-   ``factory``
     - 返回的是一个对象
     ```javascript
         var app=angular.module('myApp',[]);
@@ -743,14 +769,14 @@ var app=angular.module('myApp',['ngRoute']);
 - angualr.isArray()  判断对象是否是数组
 - angualr.isData()  判断对象是否为日期对象
 - angular.isDefined()  判断对象是否定义过
-- angular.isElement()	判断对象是否为一个DOM元素。
-- angular.isFunction()	判断对象是否为一个函数。
-- angular.isNumber()	判断对象是否为数字。
-- angular.isObject()	判断对象是否为object类型。
-- angular.isString()	判断对象是否为字符串。
-- angular.isUndefined()	判断对象是否没有定义过（与angular.isDefined()相反）。
-- angular.equals()	判断两个对象是否相等。
-- angular.lowercase()	将字符串转换为小写形式。
-- angular.uppercase()	将字符串转换为大写形式。
-- angular.copy()	深拷贝一个对象或数组。
-- angular.forEach()	遍历对象或数组中的每一个元素并执行一个函数
+  - angular.isElement()判断对象是否为一个DOM元素。
+  - angular.isFunction()判断对象是否为一个函数。
+  - angular.isNumber()判断对象是否为数字。
+  - angular.isObject()判断对象是否为object类型。
+  - angular.isString()判断对象是否为字符串。
+  - angular.isUndefined()判断对象是否没有定义过（与angular.isDefined()相反）。
+  - angular.equals()判断两个对象是否相等。
+  - angular.lowercase()将字符串转换为小写形式。
+  - angular.uppercase()将字符串转换为大写形式。
+  - angular.copy()深拷贝一个对象或数组。
+  - angular.forEach()遍历对象或数组中的每一个元素并执行一个函数

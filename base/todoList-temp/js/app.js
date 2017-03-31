@@ -1,6 +1,6 @@
 (function (window) {
 	'use strict';
-	var app = angular.module('todoApp', ['todoApp.ser']);
+	var app = angular.module('todoApp', ['todoApp.ser', 'mainDirective']);
 	app.controller('todoCtrl', function ($scope, $filter, storageSer){
 		//console.log(storageSer.test); //测试服务的引入是否成功
 		$scope.Hlist = storageSer.get();
@@ -39,7 +39,7 @@
 			storageSer.addSave();
 			//监视全选框的样式
 			$scope.AllStatus = !$filter('filter')($scope.Hlist,  {completed: false}).length;
-			console.log($scope.AllStatus);
+			//console.log($scope.AllStatus);
 		}, true);
 
 		//删除已完成的

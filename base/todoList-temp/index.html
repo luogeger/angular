@@ -17,7 +17,7 @@
 			<section class="main">
 				<input ng-model="AllStatus" ng-click="changeAllStatus()" ng-hide="!Hlist.length" class="toggle-all" type="checkbox">
 				<ul class="todo-list">
-					<li ng-repeat="todo in Hlist | filter: todoComStatus track by $index" ng-class="{completed: todo.completed, editing: temp == todo}">
+					<li focus-directive ng-repeat="todo in Hlist | filter: todoComStatus track by $index" ng-class="{completed: todo.completed, editing: temp == todo}" focus-directive>
 						<div class="view">
 							<input class="toggle" type="checkbox" ng-model="todo.completed">
 							<label  ng-bind="todo.text" ng-dblclick="ediTodo(todo)"></label>
@@ -52,5 +52,7 @@
 		<script src="js/angular.js"></script>
 		<script src="js/services.js"></script>
 		<script src="js/app.js"></script>
+		<script src="js/directive.js"></script>
+
 	</body>
 </html>
