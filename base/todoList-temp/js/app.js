@@ -1,7 +1,7 @@
 (function (window) {
 	'use strict';
 	var app = angular.module('todoApp', ['todoApp.ser', 'mainDirective']);
-	app.controller('todoCtrl', function ($scope, $filter, storageSer){
+	app.controller('todoCtrl', function ($scope, $filter, $location, storageSer){
 		//console.log(storageSer.test); //测试服务的引入是否成功
 		$scope.Hlist = storageSer.get();
 
@@ -55,7 +55,38 @@
 		};
 
 		//状态切换
+		$scope.changeContent = function(status){
+			switch (status) {
+				case 'all':
+					$scope.todoContent = {};
+					break;
+				case 'active':
+					$scope.todoContent = {completed:false};
+					break;
+				case 'completed':
+					$scope.todoContent = {completed:true};
+					break;
+			}
+		};
 
+		//锚点值的切换
+		$scope.location = $location;
+		$scope.$watch('location.path()', function(newVal){
+			//console.log(newVal.substring(1));
+			var newVal = newVal.substring(1);
+			console.log(newVal);
+			switch(newVal){
+				case 'active':
+					$scope.todoContent = {completed:false};
+					break;
+				case 'completed':
+					$scope.todoContent = {completed:true};
+					break;
+				default:
+					$scope.todoContent = {};
+					break;
+			}
+		})
 	})
 
 })(window);

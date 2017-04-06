@@ -31,13 +31,13 @@
 				<span class="todo-count"><strong ng-bind="item"></strong> item left</span>
 				<ul class="filters">
 					<li>
-						<a class="selected" href="#/">All</a>
+						<a href="#/" ng-class="{selected: todoContent.completed == undefined}" ng-click="changeContent('all')">All</a>
 					</li>
 					<li>
-						<a href="#/active">Active</a>
+						<a href="#/active" ng-class="{selected: todoContent.completed == false}" ng-click="changeContent('active')">Active</a>
 					</li>
 					<li>
-						<a href="#/completed">Completed</a>
+						<a href="#/completed" ng-class="{selected: todoContent.completed == true}" ng-click="changeContent('completed')">Completed</a>
 					</li>
 				</ul>
 				<button ng-show="clearShow" ng-click="clearCompleted()" class="clear-completed">Clear completed</button>
