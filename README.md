@@ -123,6 +123,7 @@
 - 全选框的样式，
 - todo的样式 勾选和删除键
 - 双击todo, li标签有edting类样式
+- 切换状态：``$location``
 ### 页面初始化
 
 ```HTML
@@ -298,7 +299,21 @@
     })
 ```
  ![console.log](F:\01.Picture\07.picpic\03-31_1312.angularDirective.png)![]()
+
+### 状态切换
+
 ### 锚点切换
+- 打印出2个
+- **pit：** ``$watch``只能监视``$scope``里的值，所以↓
+    ```javascript
+
+    ```
+
+- 监视锚点值的变化
+- 获取锚点值
+ - ``location``可以拿到``{ hash: '#/completed',}``
+
+
 
 
 
